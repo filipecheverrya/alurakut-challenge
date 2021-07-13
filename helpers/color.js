@@ -1,0 +1,12 @@
+export const backgroundSecondary = '#F1F9FE';
+export const backgroundDefault = '#D9E6F6';
+export const primaryText = '#2E7BB4';
+export const secondaryText = '#388BB0';
+export const tertiaryText = '#2F4A71';
+export const primaryElement = '#6F92BB';
+export const anotherElement = '#5579A1';
+export const gray1 = '#333333';
+export const gray2 = '#5A5A5A';
+export const gray3 = '#999999';
+export const gray4 = '#C5C6CA';
+export const gray4 = '#F4F4F4';
