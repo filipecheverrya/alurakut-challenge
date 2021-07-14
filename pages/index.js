@@ -1,26 +1,9 @@
 import React from 'react';
-import MainGrid from '../components/MainGrid'
-import Box from '../components/Box'
-import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../libs/AlurakutCommons';
-import { ProfileRelationsBoxWrapper } from '../components/ProfileRelations';
-
-function ProfileSidebar(propriedades) {
-  return (
-    <Box as="aside">
-      <img src={`https://github.com/${propriedades.githubUser}.png`} style={{ borderRadius: '8px' }} />
-      <hr />
-
-      <p>
-        <a className="boxLink" href={`https://github.com/${propriedades.githubUser}`}>
-          @{propriedades.githubUser}
-        </a>
-      </p>
-      <hr />
-
-      <AlurakutProfileSidebarMenuDefault />
-    </Box>
-  )
-}
+import MainGrid from 'components/MainGrid'
+import Box from 'components/Box'
+import { AlurakutMenu, OrkutNostalgicIconSet } from 'libs/AlurakutCommons';
+import { ProfileSidebar } from 'components/Profile'
+import { ProfileRelationsBoxWrapper } from 'components/Profile/Relations';
 
 export default function Home() {
   const usuarioAleatorio = 'filipecheverrya';
