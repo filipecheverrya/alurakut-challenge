@@ -55,6 +55,11 @@ const Box = styled.div`
     border-radius: 10000px;
     background-color: #6F92BB;
   }
+  .navWrapper {
+    margin: 16px auto;
+    display: flex;
+    gap: 8px;
+  }
 `; 
 
 export default Box

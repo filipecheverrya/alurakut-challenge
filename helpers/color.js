@@ -9,4 +9,4 @@ export const gray1 = '#333333';
 export const gray2 = '#5A5A5A';
 export const gray3 = '#999999';
 export const gray4 = '#C5C6CA';
-export const gray4 = '#F4F4F4';
+export const gray5 = '#F4F4F4';

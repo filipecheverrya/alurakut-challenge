@@ -1,32 +1,43 @@
 import React from 'react';
+import Head from 'next/head';
 import MainGrid from 'components/MainGrid'
 import Box from 'components/Box'
 import { AlurakutMenu, OrkutNostalgicIconSet } from 'libs/AlurakutCommons';
 import { ProfileSidebar } from 'components/Profile'
 import { ProfileRelationsBoxWrapper } from 'components/Profile/Relations';
+import ChampionsJSON from 'mocks/champions.json'
 
 export default function Home() {
-  const usuarioAleatorio = 'filipecheverrya';
-  const [comunidades, setComunidades] = React.useState([
+  const BASE_URL_ASSET_SQUARE = process.env.NEXT_BASE_URL_ASSET_SQUARE;
+  const RANDOM_USER = process.env.NEXT_RANDOM_USER;
+  const [currentForm, setCurrentForm] = React.useState('')
+  const [community, setcommunity] = React.useState([
     {
-      id: '12802378123789378912789789123896123', 
-      title: 'Eu odeio acordar cedo',
-      image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg',
+      id: new Date().toISOString(), 
+      title: 'Ezreal curando era melhor',
+      image: 'https://cdn.ome.lt/Vkkj3ziXy1WQoyYn8hqjeLRDQHw=/770x0/smart/uploads/conteudo/fotos/Ezreal-2.jpg',
+    },
+    {
+      id: new Date().toISOString()+1, 
+      title: 'Sion com machado era brabo',
+      image: 'https://cdn.ome.lt/Os2KBJLEe_AfibJFukjldmVDpi0=/770x0/smart/uploads/conteudo/fotos/Old_Sion.jpg',
     },
   ]);
-  const pessoasFavoritas = [
-    'juunegreiros',
-    'omariosouto',
-    'peas',
-    'cesardka',
-    'acemir',
-    'felipefialho',
+  const allChampionsLength = Object.keys(ChampionsJSON.data).length;
+  const allChampions = [
+    'Sett',
+    'Ryze',
+    'Sivir',
+    'Teemo',
+    'Veigar',
+    'Zed',
   ]
+
   function handleCriaComunidade(e) {
     e.preventDefault();
-    const dadosDoForm = new FormData(e.target);
-    const title = dadosDoForm.get('title');
-    const image = dadosDoForm.get('image');
+    const formData = new FormData(e.target);
+    const title = formData.get('title');
+    const image = formData.get('image');
     if (!title || !image) return null;
 
     const comunidade = {
@@ -35,16 +46,19 @@ export default function Home() {
       image,
     };
 
-    const comunidadesAtualizadas = [...comunidades, comunidade];
-    setComunidades(comunidadesAtualizadas);
+    const communityUpdated = [...community, comunidade];
+    setcommunity(communityUpdated);
   }
 
   return (
     <>
+      <Head>
+        <title>League of Orkut</title>
+      </Head>
       <AlurakutMenu />
       <MainGrid>
         <div className="profileArea" style={{ gridArea: 'profileArea' }}>
-          <ProfileSidebar githubUser={usuarioAleatorio} />
+          <ProfileSidebar githubUser={RANDOM_USER} />
         </div>
         <div className="welcomeArea" style={{ gridArea: 'welcomeArea' }}>
           <Box>
@@ -57,7 +71,11 @@ export default function Home() {
 
           <Box>
             <h2 className="subTitle">O que você deseja fazer?</h2>
-            <form onSubmit={handleCriaComunidade}>
+            <div className="navWrapper">
+              <button type="button" onClick={() => setCurrentForm('community')}>Criar comunidade</button>
+              <button type="button" onClick={() => setCurrentForm('post')}>Criar postagem</button>
+            </div>
+            <form onSubmit={handleCriaComunidade} hidden={currentForm !== 'community'}>
               <div>
                 <input
                   placeholder="Qual vai ser o nome da sua comunidade? *"
@@ -75,7 +93,7 @@ export default function Home() {
               </div>
 
               <button type="submit">
-                Criar comunidade
+                Criar
               </button>
             </form>
           </Box>
@@ -83,10 +101,10 @@ export default function Home() {
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
-              Comunidades ({comunidades.length})
+              Comunidades ({community.length})
             </h2>
             <ul>
-              {comunidades.map((itemAtual) => {
+              {community.map((itemAtual) => {
                 return (
                   <li key={itemAtual.id}>
                     <a href={`/users/${itemAtual.title}`}>
@@ -97,24 +115,26 @@ export default function Home() {
                 )
               })}
             </ul>
+            <a className="linkBottom" href={`/community`}>Todas as comunidades</a>
           </ProfileRelationsBoxWrapper>
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
-              Pessoas da comunidade ({pessoasFavoritas.length})
+              Heróis da comunidade ({allChampionsLength})
             </h2>
 
             <ul>
-              {pessoasFavoritas.map((itemAtual) => {
+              {allChampions.map((hero) => {
                 return (
-                  <li key={itemAtual}>
-                    <a href={`/users/${itemAtual}`}>
-                      <img src={`https://github.com/${itemAtual}.png`} />
-                      <span>{itemAtual}</span>
+                  <li key={hero}>
+                    <a href={`/user/${hero}`}>
+                      <img src={`${BASE_URL_ASSET_SQUARE}/${hero}.png`} />
+                      <span>{hero}</span>
                     </a>
                   </li>
                 )
               })}
             </ul>
+            <a className="linkBottom" href={`/user`}>Todos os campeões</a>
           </ProfileRelationsBoxWrapper>
         </div>
       </MainGrid>

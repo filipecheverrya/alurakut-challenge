@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Box from 'components/Box';
+import { primaryText } from 'helpers/color';
 
 export const ProfileRelationsBoxWrapper = styled(Box)`
   ul {
@@ -47,6 +48,17 @@ export const ProfileRelationsBoxWrapper = styled(Box)`
       bottom: 0;
       z-indeX: 1;
       background-image: linear-gradient(0deg,#00000073,transparent);
+    }
+  }
+  .linkBottom {
+    display: block;
+    margin-top: 16px;
+    font-size: 14px;
+    color: ${primaryText};
+    font-weight: 700;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
     }
   }
 `;
