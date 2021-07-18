@@ -6,23 +6,13 @@ import { AlurakutMenu, OrkutNostalgicIconSet } from 'libs/AlurakutCommons';
 import { ProfileSidebar } from 'components/Profile'
 import { ProfileRelationsBoxWrapper } from 'components/Profile/Relations';
 import ChampionsJSON from 'mocks/champions.json'
+import { HomeRequest } from 'helpers/apollo';
 
-export default function Home() {
+const Home = () => {
   const BASE_URL_ASSET_SQUARE = process.env.NEXT_BASE_URL_ASSET_SQUARE;
   const RANDOM_USER = process.env.NEXT_RANDOM_USER;
   const [currentForm, setCurrentForm] = React.useState('')
-  const [community, setcommunity] = React.useState([
-    {
-      id: new Date().toISOString(), 
-      title: 'Ezreal curando era melhor',
-      image: 'https://cdn.ome.lt/Vkkj3ziXy1WQoyYn8hqjeLRDQHw=/770x0/smart/uploads/conteudo/fotos/Ezreal-2.jpg',
-    },
-    {
-      id: new Date().toISOString()+1, 
-      title: 'Sion com machado era brabo',
-      image: 'https://cdn.ome.lt/Os2KBJLEe_AfibJFukjldmVDpi0=/770x0/smart/uploads/conteudo/fotos/Old_Sion.jpg',
-    },
-  ]);
+  const [community, setcommunity] = React.useState([]);
   const allChampionsLength = Object.keys(ChampionsJSON.data).length;
   const allChampions = [
     'Sett',
@@ -32,6 +22,10 @@ export default function Home() {
     'Veigar',
     'Zed',
   ]
+
+  async function registerCommunity() {
+
+  }
 
   function handleCriaComunidade(e) {
     e.preventDefault();
@@ -47,8 +41,20 @@ export default function Home() {
     };
 
     const communityUpdated = [...community, comunidade];
-    setcommunity(communityUpdated);
+    console.log(communityUpdated);
   }
+
+  React.useEffect(() => {
+    fetch('/api/community', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(async (response) => {
+      const { data: allCommunities } = await response.json();
+      setcommunity(allCommunities);
+    })
+  }, []);
 
   return (
     <>
@@ -104,16 +110,16 @@ export default function Home() {
               Comunidades ({community.length})
             </h2>
             <ul>
-              {community.map((itemAtual) => {
+              {community.length ? community.map(({ id, title, image }) => {
                 return (
-                  <li key={itemAtual.id}>
-                    <a href={`/users/${itemAtual.title}`}>
-                      <img src={itemAtual.image} />
-                      <span>{itemAtual.title}</span>
+                  <li key={id}>
+                    <a href={`/users/${id}`}>
+                      <img src={image.url} />
+                      <span>{title}</span>
                     </a>
                   </li>
                 )
-              })}
+              }) : null}
             </ul>
             <a className="linkBottom" href={`/community`}>Todas as comunidades</a>
           </ProfileRelationsBoxWrapper>
@@ -141,3 +147,5 @@ export default function Home() {
     </>
   )
 }
+
+export default Home
